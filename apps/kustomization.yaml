@@ -4,3 +4,5 @@ resources:
   - namespace.yaml
   - sources.yaml
   - kube-prometheus-stack.yaml
+  - loki.yaml
+  - fluent-bit.yaml

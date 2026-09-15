@@ -1,0 +1,53 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: fluent-bit
+  namespace: monitoring
+spec:
+  interval: 30m
+  timeout: 10m
+  chart:
+    spec:
+      chart: fluent-bit
+      version: "0.57.9"
+      sourceRef:
+        kind: HelmRepository
+        name: fluent
+        namespace: flux-system
+  values:
+    config:
+      service: |
+        [SERVICE]
+            Daemon Off
+            Flush 5
+            Log_Level info
+            Parsers_File /fluent-bit/etc/parsers.conf
+            Parsers_File /fluent-bit/etc/conf/custom_parsers.conf
+            HTTP_Server On
+            HTTP_Listen 0.0.0.0
+            HTTP_Port 2020
+            Health_Check On
+      inputs: |
+        [INPUT]
+            Name tail
+            Tag kube.*
+            Path /var/log/containers/*.log
+            multiline.parser docker, cri
+            Mem_Buf_Limit 5MB
+            Skip_Long_Lines On
+      filters: |
+        [FILTER]
+            Name kubernetes
+            Match kube.*
+            Merge_Log On
+            Keep_Log Off
+            K8S-Logging.Parser On
+            K8S-Logging.Exclude On
+      outputs: |
+        [OUTPUT]
+            Name loki
+            Match kube.*
+            Host loki.monitoring.svc.cluster.local
+            Port 3100
+            Labels job=fluentbit
+            auto_kubernetes_labels on
