@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kbot
+  namespace: default
+  labels:
+    app: kbot
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kbot
+  template:
+    metadata:
+      labels:
+        app: kbot
+    spec:
+      containers:
+        - name: kbot
+          image: europe-west1-docker.pkg.dev/project-4100158d-0e5b-4c92-b86/kbot/kbot:otel-1
+          env:
+            - name: TELE_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: tele-secret
+                  key: TELE_TOKEN
+            - name: OTEL_EXPORTER_OTLP_ENDPOINT
+              value: http://otel-collector.monitoring.svc.cluster.local:4317
+            - name: OTEL_SERVICE_NAME
+              value: kbot
+          resources:
+            requests:
+              cpu: 50m
+              memory: 64Mi
+            limits:
+              memory: 128Mi

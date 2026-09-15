@@ -9,3 +9,4 @@ resources:
   - tempo.yaml
   - opentelemetry-operator.yaml
   - otel-collector.yaml
+  - kbot.yaml
