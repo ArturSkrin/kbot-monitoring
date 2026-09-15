@@ -10,3 +10,4 @@ resources:
   - opentelemetry-operator.yaml
   - otel-collector.yaml
   - kbot.yaml
+  - grafana-datasources.yaml
