@@ -28,6 +28,7 @@ spec:
     prometheus:
       prometheusSpec:
         retention: 2d
+        enableRemoteWriteReceiver: true
         resources:
           requests:
             cpu: 200m
