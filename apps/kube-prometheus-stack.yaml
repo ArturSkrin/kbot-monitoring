@@ -22,16 +22,11 @@ spec:
     alertmanager:
       enabled: false          # не нужен для задачи, экономим ресурсы
     grafana:
-      adminPassword: "admin"  # dev-доступ, потом зайдём admin/admin
+      adminPassword: "admin"
       service:
         type: ClusterIP
-    prometheus:
-      prometheusSpec:
-        retention: 2d
-        enableRemoteWriteReceiver: true
-        resources:
-          requests:
-            cpu: 200m
-            memory: 512Mi
-          limits:
-            memory: 1200Mi
+      grafana.ini:
+        security:
+          csrf_trusted_origins: "*.cloudshell.dev"
+        server:
+          root_url: "%(protocol)s://%(domain)s/"
