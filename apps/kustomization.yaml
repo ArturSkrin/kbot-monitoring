@@ -7,3 +7,4 @@ resources:
   - loki.yaml
   - fluent-bit.yaml
   - tempo.yaml
+  - opentelemetry-operator.yaml
