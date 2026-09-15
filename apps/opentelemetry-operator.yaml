@@ -15,6 +15,9 @@ spec:
         name: open-telemetry
         namespace: flux-system
   values:
+    manager:
+      collectorImage:
+        repository: otel/opentelemetry-collector-contrib
     admissionWebhooks:
       certManager:
         enabled: false
